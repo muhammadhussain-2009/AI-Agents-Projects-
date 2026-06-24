@@ -2,7 +2,7 @@
 
 A powerful AI-driven stock analysis system built with **CrewAI**, leveraging multi-agent collaboration to provide comprehensive stock market insights and analysis.
 
-## 📋 Table of Contents
+## Table of Contents
 
 - [About CrewAI Framework](#about-crewai-framework)
 - [Installation Guidelines](#installation-guidelines)
@@ -10,7 +10,7 @@ A powerful AI-driven stock analysis system built with **CrewAI**, leveraging mul
 - [Running the Project](#running-the-project)
 - [Contribution Guidelines](#contribution-guidelines)
 
-## 🤖 About CrewAI Framework
+## About CrewAI Framework
 
 **CrewAI** is a framework for orchestrating role-playing autonomous AI agents. It enables you to create a crew of specialized agents that collaborate to accomplish complex tasks.
 
@@ -34,7 +34,7 @@ These agents work together to deliver thorough stock analysis by combining their
 
 ---
 
-## 💻 Installation Guidelines
+## Installation Guidelines
 
 ### Prerequisites
 
@@ -116,15 +116,29 @@ uv pip install crewai langchain python-dotenv
    OPENAI_MODEL_NAME=gpt-3.5-turbo
    ```
 
-4. **Update `crewai_config.py` or your main script:**
+4. CrewAI allow you to pass an llm argument to the agent construtor, that will be it's brain, so changing the agent to use GPT-3.5 instead of GPT-4 is as simple as passing that argument on the agent you want to use that LLM (in main.py).
+
    ```python
-   from langchain_openai import ChatOpenAI
-   
-   llm = ChatOpenAI(
-       model_name="gpt-3.5-turbo",
-       temperature=0.7,
-       api_key=os.getenv("OPENAI_API_KEY")
-   )
+   from langchain.chat_models import ChatOpenAI
+   llm = ChatOpenAI(model='gpt-3.5') # Loading GPT-3.5
+   def local_expert(self):
+	return Agent(
+      role='The Best Financial Analyst',
+      goal="""Impress all customers with your financial data 
+      and market trends analysis""",
+      backstory="""The most seasoned financial analyst with 
+      lots of expertise in stock market analysis and investment
+      strategies that is working for a super important customer.""",
+      verbose=True,
+      llm=llm, # <----- passing our llm reference here
+      tools=[
+        BrowserTools.scrape_and_summarize_website,
+        SearchTools.search_internet,
+        CalculatorTools.calculate,
+        SECTools.search_10q,
+        SECTools.search_10k
+      ]
+    )
    ```
 
 #### Cost Considerations:
@@ -160,15 +174,30 @@ uv pip install crewai langchain python-dotenv
    OLLAMA_BASE_URL=http://localhost:11434
    ```
 
-5. **Update your script to use Ollama:**
+5. Instantiate Ollama Model: Create an instance of the Ollama model. You can specify the model and the base URL during instantiation. For example:
+
    ```python
-   from langchain_ollama import ChatOllama
-   
-   llm = ChatOllama(
-       model=os.getenv("OLLAMA_MODEL_NAME", "mistral"),
-       base_url=os.getenv("OLLAMA_BASE_URL", "http://localhost:11434"),
-       temperature=0.7
-   )
+   from langchain.llms import Ollama
+   ollama_openhermes = Ollama(model="openhermes")
+   # Pass Ollama Model to Agents: When creating your agents within the CrewAI framework, you can pass the Ollama model as an argument to the Agent constructor. For instance:
+   def local_expert(self):
+	return Agent(
+      role='The Best Financial Analyst',
+      goal="""Impress all customers with your financial data 
+      and market trends analysis""",
+      backstory="""The most seasoned financial analyst with 
+      lots of expertise in stock market analysis and investment
+      strategies that is working for a super important customer.""",
+      verbose=True,
+      llm=ollama_openhermes, # Ollama model passed here
+      tools=[
+        BrowserTools.scrape_and_summarize_website,
+        SearchTools.search_internet,
+        CalculatorTools.calculate,
+        SECTools.search_10q,
+        SECTools.search_10k
+      ]
+    )
    ```
 
 #### Recommended Models:
@@ -177,19 +206,19 @@ uv pip install crewai langchain python-dotenv
 - **Llama 2** (13B): More powerful, requires more resources
 
 #### Advantages:
-- ✅ Completely free
-- ✅ Runs locally (no API calls)
-- ✅ Privacy-preserving
-- ✅ No rate limiting
+-  Completely free
+-  Runs locally (no API calls)
+- Privacy-preserving
+-  No rate limiting
 
 #### Disadvantages:
-- ⚠️ Requires significant computational resources
-- ⚠️ Slower response times than cloud APIs
-- ⚠️ Smaller models may have limited reasoning capacity
+- Requires significant computational resources
+- Slower response times than cloud APIs
+- Smaller models may have limited reasoning capacity
 
 ---
 
-## 🚀 Running the Main Script
+## Running the Main Script
 
 ### Basic Execution:
 
@@ -219,12 +248,12 @@ python main.py --stock AAPL MSFT GOOGL
 ### Expected Output:
 
 ```
-🤖 Starting Stock Analysis Crew...
-📊 Analyzing AAPL...
-✅ Stock Analyst Agent: [Analysis complete]
-📈 Financial Advisor Agent: [Recommendations ready]
-⚠️  Risk Assessment Agent: [Risk evaluation complete]
-📄 Report Writer Agent: [Report generated]
+Starting Stock Analysis Crew...
+Analyzing AAPL...
+Stock Analyst Agent: [Analysis complete]
+Financial Advisor Agent: [Recommendations ready]
+ Risk Assessment Agent: [Risk evaluation complete]
+Report Writer Agent: [Report generated]
 
 Final Report:
 ===============================
@@ -266,7 +295,7 @@ Solution:
 
 ---
 
-## 🤝 Contribution Guidelines
+##  Contribution Guidelines
 
 We welcome contributions! Follow these guidelines to help improve the project:
 
@@ -340,12 +369,12 @@ We welcome contributions! Follow these guidelines to help improve the project:
 
 ### Example Contribution Ideas:
 
-- 🆕 Add new stock analysis agents (Sentiment Analysis, Dividend Analyst)
-- 📊 Integrate additional data sources (Yahoo Finance, Alpha Vantage, Finnhub)
-- 🎨 Improve report formatting and visualization
-- 🐛 Bug fixes and performance improvements
-- 📚 Documentation and examples
-- 🧪 Additional test coverage
+-  Add new stock analysis agents (Sentiment Analysis, Dividend Analyst)
+-  Integrate additional data sources (Yahoo Finance, Alpha Vantage, Finnhub)
+-  Improve report formatting and visualization
+-  Bug fixes and performance improvements
+-  Documentation and examples
+-  Additional test coverage
 
 ### Reporting Bugs:
 
@@ -359,19 +388,19 @@ If you find a bug, please:
 
 ### Contact & Questions:
 
-- 📧 Create an issue for questions
-- 💬 Discussions are welcome for feature ideas
+-  Create an issue for questions
+-  Discussions are welcome for feature ideas
 
 ---
 
-## 📄 License
+##  License
 
 This project is licensed under the MIT License - see the LICENSE file for details.
 
-## ⭐ Show Your Support
+##  Show Your Support
 
-If you find this project helpful, please consider giving it a star! ⭐
+If you find this project helpful, please consider giving it a star! 
 
 ---
 
-**Happy analyzing! 📈**
+**Happy analyzing! **
