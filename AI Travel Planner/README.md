@@ -47,7 +47,7 @@ This version includes the necessary environment variables for OpenAI, SERPAPI, L
 ### How to Run the Chatbot
 To start the chatbot, run the following command:
 ```
-streamlit run main.py
+uv run streamlit run main.py
 ```
 
 ## Project Structure
