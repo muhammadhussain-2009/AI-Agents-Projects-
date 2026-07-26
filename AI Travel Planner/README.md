@@ -49,3 +49,21 @@ To start the chatbot, run the following command:
 ```
 streamlit run main.py
 ```
+
+## Project Structure
+
+```
+AI Travel Planner/
+├── agents/
+|──tools/
+|   __init__.py
+|   flightfinder.py
+|   hotelfinder.py
+|  __init__.py
+|  agent.py
+├── main.py            # Streamlit UI Configuration 
+├── __init__.py       # initialisation file
+├── pyproject.toml    # Dependencies
+├── .env.example      # Environment variables template
+└── README.md         # This file
+```
